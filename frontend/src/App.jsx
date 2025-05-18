@@ -1,34 +1,34 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import "prismjs/themes/prism-tomorrow.css";
-import prism from "prismjs";
+import prism from "prismjs"; // for syntax highlighting
 import axios from "axios";
-import Editor from "react-simple-code-editor";
-import Markdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
+import Editor from "react-simple-code-editor"; // provide code editor component
+import Markdown from "react-markdown"; //takes Markdown text (like # Hello **world**) and renders it as React elements.
+import rehypeHighlight from "rehype-highlight"; // plugin that automatically adds syntax highlighting to code blocks in Markdown.
 function App() {
-  const [code, setCode] = useState(`function add(){
-  return (1+1);}`);
+  const [code, setCode] = useState(``);
   const [review, setReview] = useState("");
   const BACKEND_URL = "http://localhost:3000";
   async function handleReview() {
     try {
+      setReview("");
       const res = await axios.post(`${BACKEND_URL}/ai/get-review`, { code });
       console.log("Response from backend:", res.data);
       setReview(res.data?.result || "No result returned");
     } catch (error) {
       console.error("Error fetching review: ", error.response?.data);
-      setReview("Error getting the review:");
+      setReview("Error to getting the review....");
     }
   }
   useEffect(() => {
     prism.highlightAll();
   });
-
   return (
     <>
       <main>
         <div className="left-box">
+          <p>Type your code here....</p>
           <div className="code-part">
             <Editor
               value={code}
@@ -40,9 +40,9 @@ function App() {
               style={{
                 fontFamily: '"arial","san-serif"',
                 fontSize: 16,
-                backgroundColor: "green",
+                backgroundColor: "rgb(48, 47, 47)",
                 border: "1px solid black",
-                borderRadius: "5px",
+                borderRadius: "10px",
                 height: "100%",
                 width: "100%",
               }}
@@ -59,5 +59,4 @@ function App() {
     </>
   );
 }
-
 export default App;
